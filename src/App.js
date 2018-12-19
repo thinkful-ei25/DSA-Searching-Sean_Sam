@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
     this.state = {
       list: [1,2,3,4,5,6],
-      textArea: '1,2,3,4,5,6',
+      textArea: '1 2 3 4 5 6',
       searchNum: '2',
       message: ''
     }
@@ -61,25 +61,30 @@ class App extends Component {
 
   handleBinary(){
     console.log('Ran Binary Search');
+    let message ='';
     this.setState({
       list: this.handleArray().sort((a,b)=>(a-b))
     }, ()=>{
       let bs = this.binarySearch();
       let num = this.state.searchNum;
+      message = `${num} was found in ${bs.count} tries`
       console.log(bs);
       if(bs.index>0){
         this.setState({
-          message: `${num} was found in ${bs.count} tries`
+          message
         });
       }
     });
   }
 
-  binarySearch(arr= this.state.list, value=this.state.searchNum, start=0, end=arr.length-1, count=1){
-    console.log('hi there');
+  binarySearch(arr = this.state.list, value=this.state.searchNum, start, end, count=1){
+    start = start === undefined ? 0 : start;
+    end = end === undefined ? arr.length: end;
+    value = parseInt(value,10);
     if(start>end) return {index: -1, count};
     let index = Math.floor((start+end)/2);
-    let item = arr[index];
+    let item = parseInt(arr[index],10);
+    console.log(index, item, start, end);
     if(item === value){
       return {index, count};
     } else if(item < value){
