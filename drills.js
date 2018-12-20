@@ -19,15 +19,33 @@ function main(){
     // dsfPostOrder(BST, arr2); 
     // console.log(arr2);
 
-    let arr2 = [105,100,121,123,97,125,128];
-    const answer = maxProfit(arr2);
-    console.log(answer);
-    let arr3 = [20,30,40,50,60];
-    const answer2 = maxProfit(arr3);
+    // let arr2 = [105,100,121,123,97,125,128];
+    // const answer = maxProfit3(arr2);
+    // console.log(answer);
+    // let arr3 = [20,30,40,50,60];
+    // const answer2 = maxProfit3(arr3);
+    // console.log(answer2);
+    // let arr4 = [100, 97, 121, 123, 98, 99, 105];
+    // let answer3 = maxProfit3(arr4);
+    // console.log(answer3);
+
+    const library = [
+      { author: 'Cowlishaw, Mike', dewey: '005.133', title: 'The REXX Language' },
+      { author: 'Sams', dewey: '005.133', title: 'Teach Yourself C++ In 21 Days' },
+      { author: 'Stroustrup., Bjarne', dewey: '005.133', title: 'The C++ Programming Language' },
+      { author: 'Crockford, Douglas', dewey: '005.2762', title: 'JavaScript: The Good Parts' },
+      { author: 'Flanagan, David', dewey: '005.2762', title: 'JavaScript: The Definitive Guide' },
+      { author: 'Schmidt, Meinhard', dewey: '005.44684', title: 'Windows Vista for Dummies' },
+      { author: 'Zondervan', dewey: '220.52081', title: 'NIV Study Bible' },
+      { author:'Humphries, Russell, Dr.', dewey: '231.7652', title: 'Starlight and Time' },
+      { author: 'Jane, Frederick Thomas', dewey: '623.82509051', title: 'Jane\'s Fighting Ships' },
+      { author: 'Norris, Chuck', dewey: '796.8092', title: 'The Official Chuck Norris Fact Book' }
+    ];
+
+    const book = { author: 'Cowlishaw, Mike', dewey: '005.133', title: 'The REXX Language' };
+
+    const answer2 = bookSearch(library, book, 0, library.length-1);
     console.log(answer2);
-    let arr4 = [100, 97, 121, 123, 98, 99, 105];
-    let answer3 = maxProfit(arr4);
-    console.log(answer3);
 
 }
 
@@ -47,6 +65,40 @@ function dsfPostOrder(BST, output=[]){
     if (BST.left) {dsfPostOrder(BST.left, output)}
     if (BST.right) { dsfPostOrder(BST.right, output)}
     output.push(BST.key)
+}
+
+function bookSearch(library, book, start=0, end=library.length-1){
+  let mid = Math.floor((start+end)/2);
+  if(start>end){
+    return -1;
+  }
+  //base case
+  if(library[mid].title === book.title){
+    return library[mid];
+  }if(library[mid].dewey<book.dewey){
+    return bookSearch(library, book,mid+1,end);
+  } else if(library[mid].dewey>book.dewey){
+    return bookSearch(library, book, start, mid-1);
+  } else {
+    if(library[mid].title===book.title){
+      return library[mid];
+    } else {
+      while(mid < library.length && library[mid].dewey===book.dewey){
+        if(library[mid].title===book.title){
+          return library[mid];
+        }
+        mid++;
+      }
+      mid--;
+      while(mid>-1 && library[mid].dewey===book.dewey){
+        if(library[mid].title===book.title){
+          return library[mid];
+        }
+        mid--;
+      }
+      return -1;
+    }
+  }
 }
 
 function maxProfit(arr){
@@ -106,6 +158,20 @@ function maxProfit2(arr){
   }
   console.log(count);
   return arr[sell_index]-arr[buy_index];
+}
+
+function maxProfit3(arr){
+  let maxProfit = arr[1]-arr[0];
+  let minPrice = arr[0];
+  for(let i=0; i<arr.length-1; i++){
+    if(arr[i]<minPrice){
+      minPrice = arr[i];
+    }
+    if(arr[i]-minPrice > maxProfit){
+      maxProfit = arr[i]-minPrice
+    }
+  }
+  return maxProfit;
 }
 
 // function maxProfit2(arr){
